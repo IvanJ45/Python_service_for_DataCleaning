@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded File</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Uploaded File: {{ filename }}</h1>
+    <form method="POST">
+        <select name="action">
+            <option value="remove_duplicates">Remove Duplicates</option>
+            <option value="remove_missing_values">Remove Missing Values</option>
+            <option value="min_max_scaling">Min-Max Scaling</option>
+            <option value="z_score_normalization">Z-Score Normalization</option>
+            <option value="convert_boolean_to_binary">Convert True/False to 1/0</option>
+        </select>
+        <input type="submit" value="Apply">
+    </form>
+    {{ table|safe }}
+    <a href="{{ url_for('upload_files') }}">Back to Upload Page</a>
+</body>
+</html>

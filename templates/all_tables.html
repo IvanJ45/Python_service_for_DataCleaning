@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Uploaded Tables</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>All Uploaded Tables</h1>
+    
+    {% if uploaded_tables %}
+        {% for filename, table in uploaded_tables.items() %}
+            <h2>{{ filename }}</h2>
+            {{ table|safe }}
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No tables to display.</p>
+    {% endif %}
+</body>
+</html>

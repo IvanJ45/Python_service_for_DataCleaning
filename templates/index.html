@@ -2,17 +2,22 @@
 <html>
 <head>
     <title>CSV File Upload and Display</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>CSV File Upload and Display</h1>
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
+        <input type="file" name="file" multiple>
         <input type="submit" value="Upload">
     </form>
 
-    {% if table %}
-        <h2>Uploaded CSV Data</h2>
-        {{ table|safe }}
+    {% if uploaded_files %}
+        <h2>Uploaded Files</h2>
+        <ul>
+            {% for file in uploaded_files %}
+                <li><a href="{{ url_for('display_uploaded', filename=file) }}">{{ file }}</a></li>
+            {% endfor %}
+        </ul>
     {% endif %}
 </body>
 </html>
