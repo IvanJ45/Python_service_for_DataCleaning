@@ -10,7 +10,10 @@
         <input type="file" name="file" multiple>
         <input type="submit" value="Upload">
     </form>
-
+    <form action="/retrieve_from_oracle" method="post">
+        <input type="submit" value="Retrieve from Oracle Database">
+    </form>
+    
     {% if uploaded_files %}
         <h2>Uploaded Files</h2>
         <ul>
@@ -19,5 +22,6 @@
             {% endfor %}
         </ul>
     {% endif %}
+    
 </body>
 </html>
