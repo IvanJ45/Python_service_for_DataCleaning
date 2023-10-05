@@ -13,7 +13,7 @@
     <form action="/retrieve_from_oracle" method="post">
         <input type="submit" value="Retrieve from Oracle Database">
     </form>
-    
+    <a href="{{ url_for('display_all_tables') }}">View All Tables</a>
     {% if uploaded_files %}
         <h2>Uploaded Files</h2>
         <ul>

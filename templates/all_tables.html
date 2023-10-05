@@ -7,15 +7,52 @@
 <body>
     <h1>All Uploaded Tables</h1>
     
-    {% if uploaded_tables %}
-        {% for filename, table in uploaded_tables.items() %}
-            <h2>{{ filename }}</h2>
-            {{ table|safe }}
-            <hr>
-        {% endfor %}
-    {% else %}
-        <p>No tables to display.</p>
-    {% endif %}
+    <div class="merge-section">
+        <h2>Merge Tables</h2>
+        <form method="POST" action="{{ url_for('merge_tables') }}">
+            <p>Select tables to merge:</p>
+            {% for filename, _ in uploaded_tables.items() %}
+                <input type="checkbox" name="tables_to_merge" value="{{ filename }}"> {{ filename }}<br>
+            {% endfor %}
+            <p>Select attribute to merge on:</p>
+            <select name="merge_attribute">
+                {% for column in common_columns %}
+                    <option value="{{ column }}">{{ column }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Merge</button>
+        </form>
+    </div>
+    <div class="tables-container">
+        {% if uploaded_tables %}
+            {% for filename, table in uploaded_tables.items() %}
+                <div class="table-wrapper" data-filename="{{ filename }}">
+                    <h2>{{ filename }}</h2>
+                    {{ table|safe }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No tables to display.</p>
+        {% endif %}
+    </div>
+
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let headers = document.querySelectorAll('.table-wrapper > h2');
+            
+            headers.forEach(header => {
+                header.addEventListener('click', function() {
+                    let table = this.nextElementSibling;
+                    if (table.style.display === "none") {
+                        table.style.display = "";
+                    } else {
+                        table.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
-
