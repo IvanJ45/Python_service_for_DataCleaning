@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded File</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .table-container {
+            max-height: 400px; /* Adjust based on your preference */
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Uploaded File: {{ filename }}</h1>
+        
+        <div class="remove-column">
+            <h2>Remove Column</h2>
+            <form method="POST" action="{{ url_for('remove_column', filename=filename) }}">
+                <select name="selected_column">
+                    <option value="">Select a column to remove</option>
+                    {% for column in column_options %}
+                        <option value="{{ column }}">{{ column }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Remove Column</button>
+            </form>
+            <ul class="flash-messages">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <li class="{{ message.category }}">{{ message }}</li>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </ul>
+        </div>
+        
+        <div class="rename-column">
+            <h2>Rename Column</h2>
+            <form method="POST" action="{{ url_for('rename_column', filename=filename) }}">
+                <p>Select a column to rename:</p>
+                <select name="old_column_name">
+                    {% for column in column_options %}
+                        <option value="{{ column }}">{{ column }}</option>
+                    {% endfor %}
+                </select>
+                <p>Enter new prefix for column and its values:</p>
+                <input type="text" name="new_column_name_prefix" placeholder="Enter new prefix">
+                <button type="submit">Rename</button>
+            </form>
+        </div>
+        
+        <div class="split-datetime">
+            <h2>Split Date-Time Column</h2>
+            <form method="POST" action="{{ url_for('split_datetime', filename=filename) }}">
+                <p>Select the combined date-time column:</p>
+                <select name="datetime_column">
+                    {% for column in column_options %}
+                        <option value="{{ column }}">{{ column }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Split Column</button>
+            </form>
+        </div>
+        
+        <div class="resample-data">
+            <h2>Resample Data</h2>
+            <form method="POST" action="{{ url_for('resample_route', filename=filename) }}">
+                <p>Select the combined date-time column:</p>
+                <select name="datetime_column">
+                    {% for column in column_options %}
+                        <option value="{{ column }}">{{ column }}</option>
+                    {% endfor %}
+                </select>
+                <p>Select interval for resampling (in minutes):</p>
+                <input type="number" name="interval" placeholder="Enter interval in minutes" required>
+                <button type="submit">Resample</button>
+            </form>
+        </div>
+        
+        <div class="action-form">
+            <h2>Choose a function to perform on the dataframe</h2>
+            <form method="POST" action="{{ url_for('apply_action', filename=filename) }}">
+                <select name="action">
+                    <option value="remove_duplicates">Remove Duplicates</option>
+                    <option value="remove_missing_values">Remove Missing Values</option>
+                    <option value="min_max_scaling">Min-Max Scaling</option>
+                    <option value="z_score_normalization">Z-Score Normalization</option>
+                    <option value="convert_boolean_to_binary">Convert True/False to 1/0</option>
+                </select>
+                <button type="submit">Apply</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <div class="uploaded-table">
+                {{ table|safe }}
+            </div>
+        </div>
+
+        <a href="{{ url_for('upload_files') }}">Back to Upload Page</a>
+        <a href="{{ url_for('display_all_tables') }}">View All Tables</a>
+    </div>
+</body>
+</html>

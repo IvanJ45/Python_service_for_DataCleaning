@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data from Oracle</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Data from Oracle Database</h1>
+
+    {% if table_data %}
+        <div>{{ table_data|safe }}</div>
+    {% else %}
+        <p>No data available.</p>
+    {% endif %}
+</body>
+</html>
